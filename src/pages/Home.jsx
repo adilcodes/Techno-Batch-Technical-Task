@@ -1,35 +1,41 @@
-import React from 'react'
+import React from 'react';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import StationModal from '../components/StationModal';
 
 export default function Home() {
-  return (
-    <>
-        <div className="container-fluid">
-            {/* Header Start */}
-            <div className="header row bg-secondary px-4 py-3">
-                <div className="d-flex justify-content-between align-items-center">
-                    <h3 className='p-0 m-0 text-white'>Add Demand</h3>
-                    <button className="btn btn-warning rounded-3 px-4 py-2">Submit</button>
+    return (
+        <>
+            <div className="cstm-container container-fluid d-flex flex-column">
+                {/* Header */}
+                <Header />
+
+                {/* Body Start */}
+                <div className="content-area mt-5 row px-4">
+                    {/* Aside Bar Start */}
+                    <div className="col-xl-2 col-md-3">
+                        <div className="date">
+                            <p className='m-0 mb-2'>
+                                <span className='fw-semibold'>Date</span>
+                                <span className="text-danger fw-bold">*</span>
+                            </p>
+                            <input type="date" name="selectedDate" className='form-control border-dark' style={{ fontSize: 14 }} />
+                        </div>
+                        <div className="stations mt-4">
+                            <p className="m-0 mb-4">Stations</p>
+                            <button className="btn border-0 text-info py-0" data-bs-toggle="modal" data-bs-target="#addStation">
+                                + ADD STATION
+                            </button>
+                            <StationModal />
+                        </div>
+                    </div>
+                    {/* Aside Bar End */}
                 </div>
-            </div>
-            {/* Header End */}
+                {/* Body End */}
 
-            {/* Body Start */}
-            <div className="row">
-                {/* Aside Bar Start */}
-                <div className="col-4">
-
-                </div>
-                {/* Aside Bar End */}
+                {/* Footer */}
+                <Footer />
             </div>
-            {/* Body End */}
-
-            {/* Footer Start */}
-            <div className="footer row px-4 py-2">
-                <hr className='border-2 opacity-50'/>
-                <p className='p-0 m-0 text-center text-secondary' style={{fontSize: 14}}>Technobatch LLC Copyright &copy; 2023 - All Rights Reserved</p>
-            </div>
-            {/* Footer End */}
-        </div>
-    </>
-  )
+        </>
+    )
 }

@@ -11,11 +11,44 @@
     min-height: 97vh;
 }
 
+.form-field {
+    border: 2px solid #d3d3d3 !important;
+    background-color: #f7f7f7 !important;
+    box-shadow: none !important;
+}
+
 /* General Styling End */
 
 /* Home Styling Start */
 .content-area {
     flex: 1 1;
+}
+
+.stationsList {
+    box-shadow: 0 0 7px #00000044 !important;
+    border-radius: 12px;
+}
+
+.single-station {
+    cursor: pointer;
+}
+
+.single-station:first-of-type {
+    border-radius: 12px 12px 0 0;
+}
+
+.single-station:last-of-type {
+    border-radius: 0 0 12px 12px;
+}
+
+.single-station-active {
+    background-color: rgb(1, 136, 151);
+    color: #fff;
+}
+
+.add-route-btn {
+    background: #03111B !important;
+    border-color: #03111B !important;
 }
 
 /* Home Styling End */

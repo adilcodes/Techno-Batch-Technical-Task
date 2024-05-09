@@ -18,7 +18,7 @@ export default function StationModal() {
                             <span className="text-danger fw-bold">*</span>
                         </p>
                         <form className='d-flex gap-3'>
-                            <select className="form-select border-black py-2" name='station'>
+                            <select className="form-select border-black py-2 rounded-3" name='station'>
                                 <option selected disabled>Select Station</option>
                                 <option value="One">One</option>
                             </select>

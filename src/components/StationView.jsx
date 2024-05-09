@@ -3,7 +3,7 @@ import SingleRoute from './SingleRoute';
 
 export default function StationView() {
     return (
-        <div className='col-xl-10 col-lg-9 ps-5'>
+        <div className='col-xl-10 col-md-9 ps-md-5 mt-md-0 mt-5'>
             <h4 className='mb-4 fw-semibold'>Station Name: St-15</h4>
             <p className='m-0 mb-2'>
                 <span className='fw-semibold'>Routes Demand</span>

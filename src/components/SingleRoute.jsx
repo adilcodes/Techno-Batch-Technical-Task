@@ -8,7 +8,7 @@ export default function SingleRoute() {
                     <span className='fw-semibold'>Route</span>
                     <span className="text-danger fw-bold">*</span>
                 </p>
-                <select className="form-select border-black py-2 rounded-3 form-field" name='routeName'>
+                <select className="form-select border-black py-2 rounded-3 form-field" name='routeName' required>
                     <option value="One">One</option>
                     <option value="two">two</option>
                 </select>
@@ -19,7 +19,7 @@ export default function SingleRoute() {
                     <span className='fw-semibold'>Demand</span>
                     <span className="text-danger fw-bold">*</span>
                 </p>
-                <input type="number" name="routesDemand" className='form-control border-dark py-2 rounded-3 form-field' placeholder='Enter' />
+                <input type="number" name="routesDemand" className='form-control border-dark py-2 rounded-3 form-field' placeholder='Enter' required />
             </div>
 
             <div className="col-sm-2 col d-flex align-items-end">

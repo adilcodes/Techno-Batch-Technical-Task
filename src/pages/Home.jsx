@@ -1,10 +1,54 @@
-import React from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import StationModal from '../components/StationModal';
-import StationView from '../components/StationView';
+import React, { useContext, useEffect, useState } from "react";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import StationModal from "../components/StationModal";
+import StationView from "../components/StationView";
+
+// Context
+import { StationsContextStart } from "../context/StationsContext";
 
 export default function Home() {
+
+    const getDateFromLS = () => {
+        let date = localStorage.getItem("selectedDate");
+        return date;
+    }
+
+    // States:
+    const [selectedDate, setSelectedDate] = useState(getDateFromLS());
+    const { stationsList } = useContext(StationsContextStart);
+    const [stationActive, setStationActive] = useState(stationsList[0]);
+    const [activatedStation, setActivatedStation] = useState({
+        stationName: stationsList[0],
+    });
+
+    // Functions:
+    let changeDate = (e) => {
+        setSelectedDate(e.target.value);
+    }
+
+    let makeStationActive = (station) => {
+        setStationActive(station);
+        setActivatedStation({
+            ...activatedStation,
+            stationName : station,
+        })
+    }
+
+    // Effects
+    useEffect(() => {
+        setStationActive(stationsList[0]);
+        setActivatedStation({
+            ...activatedStation,
+            stationName : stationsList[0],
+        })
+    }, [stationsList[0]]);
+
+    useEffect(() => {
+        localStorage.setItem("selectedDate", selectedDate);
+        localStorage.setItem("stationsList", JSON.stringify(stationsList));
+    }, [selectedDate, stationsList]);
+
     return (
         <>
             <div className="cstm-container container-fluid d-flex flex-column">
@@ -16,32 +60,49 @@ export default function Home() {
                     {/* Aside Bar Start */}
                     <div className="col-xl-2 col-md-3">
                         <div className="date">
-                            <p className='m-0 mb-2'>
-                                <span className='fw-semibold'>Date</span>
+                            <p className="m-0 mb-2">
+                                <span className="fw-semibold">Date</span>
                                 <span className="text-danger fw-bold">*</span>
                             </p>
-                            <input type="date" name="selectedDate" className='form-control border-dark py-2 rounded-3 form-field' style={{ fontSize: 14 }} />
+                            <input
+                                type="date"
+                                name="selectedDate"
+                                required
+                                value={selectedDate}
+                                onChange={changeDate}
+                                disabled={stationsList.length > 0 ? true : false}
+                                className="form-control border-dark py-2 rounded-3 form-field"
+                                style={{ fontSize: 14 }}
+                            />
                         </div>
                         <div className="stations mt-4">
                             <p className="m-0 mb-2 fw-semibold">Stations</p>
+
+                            {/* Stations List Start */}
                             <div className="stationsList mb-3">
-                                <div className="single-station single-station-active p-3">
-                                    <p className="m-0">
-                                        → Station 13
-                                    </p>
-                                </div>
-                                <div className="single-station p-3">
-                                    <p className="m-0">
-                                        → Station 14
-                                    </p>
-                                </div>
-                                <div className="single-station p-3">
-                                    <p className="m-0">
-                                        → Station 15
-                                    </p>
-                                </div>
+                                {
+                                    stationsList.map((station, index) => {
+                                        return (
+                                            <div 
+                                                key={index}
+                                                onClick={() => {makeStationActive(station)}}
+                                                className={`single-station ${stationActive == station ? "single-station-active" : ""} p-3`}
+
+                                                >
+                                                <p className="m-0">→ {station}</p>
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
-                            <button className="btn border-0 text-info py-0" data-bs-toggle="modal" data-bs-target="#addStation">
+                            {/* Stations List End */}
+
+                            <button
+                                className={`btn border-0 ${(!selectedDate || selectedDate == "null") ? "text-secondary" : "text-info"} py-0`}
+                                data-bs-toggle="modal"
+                                data-bs-target="#addStation"
+                                disabled={(!selectedDate || selectedDate == "null") ? true : false}
+                            >
                                 + ADD STATION
                             </button>
                             <StationModal />
@@ -50,7 +111,13 @@ export default function Home() {
                     {/* Aside Bar End */}
 
                     {/* Station View Start */}
-                    <StationView />
+                    {
+                        stationsList.length > 0 ? (
+                            <StationView
+                                stationName = {activatedStation.stationName}
+                            />
+                        ) : ""
+                    }
                     {/* Station View End */}
                 </div>
                 {/* Body End */}
@@ -59,5 +126,5 @@ export default function Home() {
                 <Footer />
             </div>
         </>
-    )
+    );
 }

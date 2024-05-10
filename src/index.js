@@ -5,9 +5,14 @@ import './index.css';
 import Home from './pages/Home';
 import ViewDemands from './pages/ViewDemands';
 
+// Contexts
+import StationsContext from './context/StationsContext';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ViewDemands />
+    <StationsContext>
+      <Home />
+    </StationsContext>
   </React.StrictMode>
 );

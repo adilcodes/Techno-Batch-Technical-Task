@@ -23,6 +23,17 @@ body {
 
 /* General Styling End */
 
+/* Loader Styling Start */
+.loader-container {
+    position: absolute;
+    background: #f1f1f1;
+    width: 100%;
+    height: calc(100% - 74px);
+    left: 0;
+}
+
+/* Loader Styling End */
+
 /* Home Styling Start */
 .content-area {
     flex: 1 1;

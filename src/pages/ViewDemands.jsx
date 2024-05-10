@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import DemandTable from '../components/DemandTable';
 
 export default function ViewDemands() {
   return (
@@ -11,7 +12,7 @@ export default function ViewDemands() {
       {/* Body Start */}
       <div className="mt-4 pt-2 row px-4">
         {/* Filters Start */}
-        <div className="filters d-flex flex-md-nowrap flex-wrap gap-4 mb-3">
+        <div className="filters d-flex flex-md-nowrap flex-wrap gap-4 mb-4 pb-2">
           <div className='col-md col-12'>
             <p className='m-0 mb-2'>
               <span className='fw-semibold'>Created From</span>
@@ -43,7 +44,7 @@ export default function ViewDemands() {
         {/* Filters End */}
 
         {/* Table Start */}
-        
+        <DemandTable />
         {/* Table End */}
       </div>
       {/* Body End */}

@@ -52,3 +52,12 @@
 }
 
 /* Home Styling End */
+
+/* View Demands Styling Start */
+.table-head{
+    background-color: #6c757d54;
+}
+.tr-border{
+    border-bottom: 1.5px solid #6c757d56;
+}
+/* View Demands Styling End */

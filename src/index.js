@@ -10,9 +10,7 @@ import StationsContext from './context/StationsContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <StationsContext>
-      <Home />
-    </StationsContext>
-  </React.StrictMode>
+  <StationsContext>
+    <Home />
+  </StationsContext>
 );

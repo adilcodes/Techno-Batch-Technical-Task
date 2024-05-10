@@ -4,18 +4,11 @@ import SingleRoute from "./SingleRoute";
 export default function StationView(props) {
   // States:
   const [routesDetail, setRoutesDetail] = useState({
-    routeDemandInpVal: "",
     routes: [],
+    demandTotal: 0
   });
 
-  // Functions
-  let changeRouteDemandInpVal = (e) => {
-    setRoutesDetail({
-      ...routesDetail,
-      routeDemandInpVal: e.target.value,
-    });
-  };
-
+  // Functions:
   let makeRouteRow = (e) => {
     e.preventDefault();
     setRoutesDetail({
@@ -24,7 +17,7 @@ export default function StationView(props) {
         ...routesDetail.routes,
         {
           routeId: null,
-          demandCount: routesDetail.routeDemandInpVal,
+          demandCount: 0,
         },
       ],
     });
@@ -34,10 +27,23 @@ export default function StationView(props) {
     const filteredRoutes = routesDetail.routes.filter((route, index) => {
       return index !== id;
     });
-    
+
     setRoutesDetail({
       ...routesDetail,
       routes: [...filteredRoutes]
+    });
+  }
+
+  let changeDemandValue = (e) => {
+    setRoutesDetail({
+      ...routesDetail,
+      routes: [
+        ...routesDetail.routes,
+        {
+          routeId: null,
+          demandCount: e.target.value,
+        },
+      ],
     });
   }
 
@@ -46,13 +52,13 @@ export default function StationView(props) {
     let detailsFromLS = JSON.parse(localStorage.getItem(props.stationName));
     if (detailsFromLS) {
       setRoutesDetail({
-        routeDemandInpVal: detailsFromLS.routeDemandInpVal,
         routes: detailsFromLS.routes,
+        demandTotal: detailsFromLS.demandTotal,
       })
     } else {
       setRoutesDetail({
-        routeDemandInpVal: "",
         routes: [],
+        demandTotal: 0
       })
     }
   }, [props.stationName]);
@@ -74,9 +80,7 @@ export default function StationView(props) {
           name="routesDemand"
           className="form-control border-dark py-2 rounded-3 form-field"
           placeholder="Enter"
-          value={routesDetail.routeDemandInpVal}
-          onChange={changeRouteDemandInpVal}
-          required
+          value={routesDetail.demandTotal}
         />
         <input
           type="submit"
@@ -101,6 +105,7 @@ export default function StationView(props) {
               id={index}
               routeDemand={singleRoute.demandCount}
               delRouteRowHandler={deleteRouteRow}
+              changeDemandValueHandler={changeDemandValue}
             />
           );
         })}

@@ -27,6 +27,7 @@ export default function SingleRoute(props) {
           type="number"
           name="routesDemand"
           value={props.routeDemand}
+          onChange={props.changeDemandValueHandler}
           className="form-control border-dark py-2 rounded-3 form-field"
           placeholder="Enter"
           required

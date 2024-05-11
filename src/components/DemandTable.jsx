@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function DemandTable() {
+export default function DemandTable({data}) {
     return (
         <div className="d-flex table-responsive">
             <table className='table table-hover'>

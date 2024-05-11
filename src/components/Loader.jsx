@@ -12,9 +12,9 @@ export function Loader() {
     )
 }
 
-export function SmallLoader() {
+export function SmallLoader(props) {
     return (
-        <div className="col-xl-10 col-md-9 d-flex justify-content-center align-items-center">
+        <div className={`${props.complete ? "col-12" : "col-xl-10 col-md-9"} d-flex justify-content-center align-items-center`}>
             <div className="spinner-border text-warning" role="status">
                 <span className="visually-hidden">Loading...</span>
             </div>

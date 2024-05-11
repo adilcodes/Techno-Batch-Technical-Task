@@ -1,7 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DemandHeader from "../components/DemandHeader";
 import Footer from "../components/Footer";
 import DemandTable from "../components/DemandTable";
+import { SmallLoader } from "../components/Loader";
 
 // Context
 import { StationsContextStart } from "../context/StationsContext";
@@ -22,7 +23,51 @@ export default function ViewDemands() {
   });
 
   // Funtions:
-  const startFiltering = () => {};
+  const changingInputVals = (e) => {
+    const { name, value } = e.target;
+    setFilterValues({
+      ...filterValues,
+      [name]: value,
+    });
+  }
+
+  const startFiltering = () => {
+
+  };
+
+  const fetchingTableData = async () => {
+    setIsLoading(true)
+    let response = await fetch("https://dev-amzdsp-api.dispatchex.com/api/RouteDemand/GetAllRouteDemand", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        "filterModel": {
+          "createdFrom": "",
+          "createdTo": "",
+          "start": 0,
+          "length": 10000,
+          "search": "",
+          "sortDir": "desc",
+          "sortCol": 0
+        },
+        "stationids": ""
+      })
+    });
+
+    if (response.ok) {
+      let result = await response.json();
+      setFetchedTableData(result.response.data);
+      setIsLoading(false);
+    }
+  }
+
+  // Effects:
+  useEffect(() => {
+    fetchingTableData();
+  }, [])
 
   return (
     <div className="cstm-container container-fluid d-flex flex-column">
@@ -41,8 +86,10 @@ export default function ViewDemands() {
             <input
               type="date"
               name="createdFrom"
+              required
               className="form-control border-dark py-2 rounded-3 form-field"
               value={filterValues.createdFrom}
+              onChange={changingInputVals}
             />
           </div>
           <div className="col-md col-12">
@@ -53,8 +100,10 @@ export default function ViewDemands() {
             <input
               type="date"
               name="createdTo"
+              required
               className="form-control border-dark py-2 rounded-3 form-field"
               value={filterValues.createdTo}
+              onChange={changingInputVals}
             />
           </div>
           <div className="col-md col">
@@ -64,8 +113,10 @@ export default function ViewDemands() {
             </p>
             <select
               className="form-select border-black py-2 rounded-3 form-field"
-              name="stationId"
+              name="stations"
+              required
               value={filterValues.stations}
+              onChange={changingInputVals}
             >
               <option disabled value="">
                 Select Station
@@ -94,7 +145,11 @@ export default function ViewDemands() {
         {/* Filters End */}
 
         {/* Table Start */}
-        <DemandTable />
+        {
+          isLoading
+          ? <SmallLoader complete={true} />
+          : <DemandTable data={fetchedTableData} />
+        }
         {/* Table End */}
       </div>
       {/* Body End */}

@@ -110,7 +110,7 @@ export default function StationView(props) {
     localStorage.setItem(props.stationName, JSON.stringify(routesDetail));
   }, [routesDetail]);
 
-  if(props.loading) {return <SmallLoader />}
+  if(props.loading) {return <SmallLoader complete={false} />}
   
   return (
     <div className="col-xl-10 col-md-9 ps-md-5 mt-md-0 mt-5">

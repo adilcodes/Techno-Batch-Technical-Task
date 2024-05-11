@@ -1,11 +1,15 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { StationsContextStart } from "../context/StationsContext";
 
 export default function StationModal() {
 
+    // Variables:
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiRHJpdmVyIiwiSWQiOiI3IiwiTmFtZSI6IkFmYXEiLCJFbWFpbCI6IkFmYXEiLCJleHAiOjE3MTU0NDcxMDgsImlzcyI6ImFtYXpvbmRzcF9hcGkiLCJhdWQiOiJhbWF6b25kc3BfYXBpIn0.BhjbhTyhwUL4rdsq29-DWjewWzSFUL4QSvlkP4p4y7A";
+
     // States
     const [selectedStation, setSelectedStation] = useState();
     const { stationsList, setStationsList } = useContext(StationsContextStart);
+    const [fetchedStations, setFetchedStations] = useState([]);
 
     // Refs
     const dismissModal = useRef("")
@@ -24,7 +28,38 @@ export default function StationModal() {
         dismissModal.current.click();
     }
 
-    let arr = ["1", "2", "3", "4"]
+    // Fetching Stations
+    const fetchingStations = async () => {
+        let response = await fetch("https://dev-amzdsp-api.dispatchex.com/api/Stations/getallStation", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "filterModel": {
+                    "createdFrom": "2023-01-08",
+                    "createdTo": "2024-05-08",
+                    "start": 0,
+                    "length": 1000,
+                    "search": "",
+                    "sortDir": "desc",
+                    "sortCol": 0
+                },
+                "stationTypeId": 0
+            })
+        });
+
+        if (response.ok) {
+            let result = await response.json();
+            setFetchedStations(result.response.data);
+        }
+    }
+
+    // Effects
+    useEffect(() => {
+        fetchingStations();
+    }, [])
 
     return (
         <div
@@ -68,14 +103,14 @@ export default function StationModal() {
                                     Select Station
                                 </option>
                                 {
-                                    arr.map((station, index) => {
+                                    fetchedStations.map((station, index) => {
                                         return (
                                             <option
                                                 key={index}
-                                                value={station}
-                                                disabled={stationsList.includes(station) ? true : false}
+                                                value={station.StationName}
+                                                disabled={stationsList.includes(station.StationName) ? true : false}
                                             >
-                                                {station}
+                                                {station.StationName}
                                             </option>
                                         )
                                     })

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SingleRoute from "./SingleRoute";
+import { SmallLoader } from "./Loader";
 
 export default function StationView(props) {
   // States:
@@ -109,6 +110,8 @@ export default function StationView(props) {
     localStorage.setItem(props.stationName, JSON.stringify(routesDetail));
   }, [routesDetail]);
 
+  if(props.loading) {return <SmallLoader />}
+  
   return (
     <div className="col-xl-10 col-md-9 ps-md-5 mt-md-0 mt-5">
       <h4 className="mb-4 fw-semibold">Station Name: {props.stationName ? (props.stationName).split("--")[0] : ""}</h4>

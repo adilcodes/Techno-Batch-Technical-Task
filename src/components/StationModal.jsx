@@ -5,9 +5,9 @@ import { TokenContextStart } from "../context/TokenContext";
 export default function StationModal() {
 
     // States
-    const [selectedStation, setSelectedStation] = useState();
+    const [selectedStation, setSelectedStation] = useState("");
     const { stationsList, setStationsList } = useContext(StationsContextStart);
-    const { token } = useContext(TokenContextStart)
+    const { token } = useContext(TokenContextStart);
     const [fetchedStations, setFetchedStations] = useState([]);
 
     // Refs
@@ -98,7 +98,7 @@ export default function StationModal() {
                                 value={selectedStation}
                                 onChange={changeStation}
                             >
-                                <option selected disabled>
+                                <option disabled value="">
                                     Select Station
                                 </option>
                                 {
@@ -119,7 +119,7 @@ export default function StationModal() {
                                 type="submit"
                                 name="submit-btn"
                                 className="btn btn-warning"
-                                disabled={stationsList.includes(selectedStation) ? true : false}
+                                disabled={(stationsList.includes(selectedStation)) || (selectedStation == "") ? true : false}
                                 value="ADD STATION"
                             />
                         </form>

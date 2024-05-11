@@ -21,6 +21,7 @@ export default function Home() {
   const { token } = useContext(TokenContextStart);
   const { setRoutes } = useContext(RoutesContextStart);
   const [stationActive, setStationActive] = useState(stationsList[0]);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Functions:
   let changeDate = (e) => {
@@ -28,6 +29,7 @@ export default function Home() {
   };
 
   let makeStationActive = async (station) => {
+    setIsLoading(true);
     setStationActive(station);
     let stationId = station ? station.split("--").reverse()[0] : "";
 
@@ -41,6 +43,7 @@ export default function Home() {
     if (response.ok) {
       let result = await response.json();
       setRoutes(result.response.routes);
+      setIsLoading(false);
     }
   };
 
@@ -122,11 +125,16 @@ export default function Home() {
           {/* Aside Bar End */}
 
           {/* Station View Start */}
-          {stationsList.length > 0 ? (
-            <StationView stationName={stationActive} />
-          ) : (
-            ""
-          )}
+          {
+            stationsList.length > 0 ? (
+              <StationView
+                stationName={stationActive}
+                loading = {isLoading}
+              />
+            ) : (
+              ""
+            )
+          }
           {/* Station View End */}
         </div>
         {/* Body End */}

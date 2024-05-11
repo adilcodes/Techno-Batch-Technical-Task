@@ -34,6 +34,7 @@ select {
     width: 100%;
     height: calc(100% - 74px);
     left: 0;
+    z-index: 999;
 }
 
 /* Loader Styling End */

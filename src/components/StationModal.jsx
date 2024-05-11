@@ -1,14 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { StationsContextStart } from "../context/StationsContext";
-import { TokenContextStart } from "../context/TokenContext";
 
 export default function StationModal() {
 
     // States
     const [selectedStation, setSelectedStation] = useState("");
-    const { stationsList, setStationsList } = useContext(StationsContextStart);
-    const { token } = useContext(TokenContextStart);
-    const [fetchedStations, setFetchedStations] = useState([]);
+    const { stationsList, setStationsList, fetchedStations } = useContext(StationsContextStart);
 
     // Refs
     const dismissModal = useRef("")
@@ -26,39 +23,6 @@ export default function StationModal() {
         // Dismiss The Model
         dismissModal.current.click();
     }
-
-    // Fetching Stations
-    const fetchingStations = async () => {
-        let response = await fetch("https://dev-amzdsp-api.dispatchex.com/api/Stations/getallStation", {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                "filterModel": {
-                    "createdFrom": "2023-01-08",
-                    "createdTo": "2024-05-08",
-                    "start": 0,
-                    "length": 1000,
-                    "search": "",
-                    "sortDir": "desc",
-                    "sortCol": 0
-                },
-                "stationTypeId": 0
-            })
-        });
-
-        if (response.ok) {
-            let result = await response.json();
-            setFetchedStations(result.response.data);
-        }
-    }
-
-    // Effects
-    useEffect(() => {
-        fetchingStations();
-    }, [])
 
     return (
         <div
@@ -102,7 +66,7 @@ export default function StationModal() {
                                     Select Station
                                 </option>
                                 {
-                                    fetchedStations.map((station, index) => {
+                                    fetchedStations?.map((station, index) => {
                                         return (
                                             <option
                                                 key={index}

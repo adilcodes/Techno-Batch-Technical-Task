@@ -15,7 +15,7 @@ root.render(
   <TokenContext>
     <StationsContext>
       <RoutesContext>
-        <Home />
+        <ViewDemands />
       </RoutesContext>
     </StationsContext>
   </TokenContext>

@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-// import App from './App';
-import Home from './pages/Home';
-import ViewDemands from './pages/ViewDemands';
+import App from './App';
 
 // Contexts
 import StationsContext from './context/StationsContext';
@@ -15,7 +13,7 @@ root.render(
   <TokenContext>
     <StationsContext>
       <RoutesContext>
-        <ViewDemands />
+        <App />
       </RoutesContext>
     </StationsContext>
   </TokenContext>

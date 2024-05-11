@@ -12,29 +12,34 @@ export default function SingleRoute(props) {
           <span className="fw-semibold">Route</span>
           <span className="text-danger fw-bold">*</span>
         </p>
-        <select
-          className="form-select border-black py-2 rounded-3 form-field"
-          name="routeName"
-          value={props.routeValue}
-          onChange={(e) => {
-            props.changeRouteValueHandler(e, props.id)
-          }}
-          required
-        >
-          {
-            routes.map((route, index) => {
-              return (
-                <option
-                  key={index}
-                  value={route.RouteName + "--" + route.RouteId}
-                  disabled={props.routesNames ? (props.routesNames.includes(route.RouteName + "--" + route.RouteId) ? true : false) : ""}
-                >
-                  {route.RouteName}
-                </option>
-              )
-            })
-          }
-        </select>
+        <form>
+          <select
+            className="form-select border-black py-2 rounded-3 form-field"
+            name="selectedRoute"
+            required
+            value={props.routeValue}
+            onChange={(e) => {
+              props.changeRouteValueHandler(e, props.id)
+            }}
+          >
+            <option disabled value="">
+              Select The Route To Add Demand
+            </option>
+            {
+              routes.map((route, index) => {
+                return (
+                  <option
+                    key={index}
+                    value={route.RouteName + "--" + route.RouteId}
+                    disabled={props.routesNames ? (props.routesNames.includes(route.RouteName + "--" + route.RouteId) ? true : false) : ""}
+                  >
+                    {route.RouteName}
+                  </option>
+                )
+              })
+            }
+          </select>
+        </form>
       </div>
 
       <div className="col-sm col">
@@ -46,10 +51,13 @@ export default function SingleRoute(props) {
           type="number"
           name="routesDemand"
           value={props.routeDemand}
-          onChange={props.changeDemandValueHandler}
+          onChange={(e) => {
+            props.changeDemandValueHandler(e, props.id);
+          }}
           className="form-control border-dark py-2 rounded-3 form-field"
           placeholder="Enter"
           required
+          disabled={props.routeValue != "" ? false : true}
         />
       </div>
 

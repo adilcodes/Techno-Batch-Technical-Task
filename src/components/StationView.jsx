@@ -18,7 +18,7 @@ export default function StationView(props) {
         ...routesDetail.routes,
         {
           routeId: 0,
-          routeName: "Select The Route",
+          routeName: "",
           demandCount: 0,
         },
       ],
@@ -37,8 +37,25 @@ export default function StationView(props) {
     });
   }
 
-  let changeDemandValue = (e) => {
+  let changeDemandValue = (e, r_id) => {
+    let updatedRoutes = routesDetail.routes.map((route, index) => {
+      if (index !== r_id) {
+        return route;
+      }
 
+      // Required Route
+      route = {
+        ...route,
+        demandCount: e.target.value,
+      }
+      return (route);
+
+    });
+
+    setRoutesDetail({
+      ...routesDetail,
+      routes: [...updatedRoutes],
+    });
   }
 
   let changeRouteValue = (e, r_id) => {

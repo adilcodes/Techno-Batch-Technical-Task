@@ -91,4 +91,11 @@ select {
     cursor: pointer;
 }
 
+.select__control.css-13cymwt-control{
+    border: 0 !important;
+    border-radius: 6px !important;
+    background: transparent !important;
+    padding: 2px 0 !important;
+}
+
 /* View Demands Styling End */

@@ -3,6 +3,7 @@ import DemandHeader from "../components/DemandHeader";
 import Footer from "../components/Footer";
 import DemandTable from "../components/DemandTable";
 import { SmallLoader } from "../components/Loader";
+import Select from 'react-select';
 
 // Context
 import { StationsContextStart } from "../context/StationsContext";
@@ -20,6 +21,7 @@ export default function ViewDemands() {
     createdFrom: "",
     createdTo: "",
     stations: [],
+    stationsForFilter: []
   });
 
   // Funtions:
@@ -28,6 +30,14 @@ export default function ViewDemands() {
     setFilterValues({
       ...filterValues,
       [name]: value,
+    });
+  }
+
+  const changeSelectedOptions = (options) => {
+    setFilterValues({
+      ...filterValues,
+      stations: options,
+      stationsForFilter: options.map((opt) => opt.value),
     });
   }
 
@@ -53,7 +63,7 @@ export default function ViewDemands() {
           "sortDir": "desc",
           "sortCol": 0
         },
-        "stationids": ""
+        "stationids": filterValues?.stationsForFilter?.toString() || ""
       })
     });
 
@@ -67,7 +77,13 @@ export default function ViewDemands() {
   // Effects:
   useEffect(() => {
     fetchingTableData();
-  }, [])
+  }, []);
+
+  let stationOptions = fetchedStations?.map((station) => {
+    return (
+      { value: station.StationId, label: station.StationName }
+    )
+  })
 
   return (
     <div className="cstm-container container-fluid d-flex flex-column">
@@ -111,27 +127,15 @@ export default function ViewDemands() {
               <span className="fw-semibold">Station</span>
               <span className="text-danger fw-bold">*</span>
             </p>
-            <select
-              className="form-select border-black py-2 rounded-3 form-field"
+            <Select
+              isMulti
               name="stations"
-              required
+              options={stationOptions}
+              className="basic-multi-select rounded-3 form-field"
+              classNamePrefix="select"
               value={filterValues.stations}
-              onChange={changingInputVals}
-            >
-              <option disabled value="">
-                Select Station
-              </option>
-              {fetchedStations?.map((station, index) => {
-                return (
-                  <option
-                    key={index}
-                    value={station.StationName + "--" + station.StationId}
-                  >
-                    {station.StationName}
-                  </option>
-                );
-              })}
-            </select>
+              onChange={changeSelectedOptions}
+            />
           </div>
           <div className="col-sm-2 col-4 col d-flex align-items-end">
             <button

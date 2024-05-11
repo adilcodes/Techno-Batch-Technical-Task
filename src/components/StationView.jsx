@@ -33,7 +33,10 @@ export default function StationView(props) {
     setRoutesDetail({
       ...routesDetail,
       routes: [...filteredRoutes],
-      routesNamesArr: [...(filteredRoutes.map((route) => route.routeName))]
+      routesNamesArr: [...(filteredRoutes.map((route) => route.routeName))],
+      demandTotal: filteredRoutes.reduce((acc, curVal) => {
+        return acc + Number(curVal.demandCount);
+      }, 0)
     });
   }
 
@@ -55,6 +58,9 @@ export default function StationView(props) {
     setRoutesDetail({
       ...routesDetail,
       routes: [...updatedRoutes],
+      demandTotal: updatedRoutes.reduce((acc, curVal) => {
+        return acc + Number(curVal.demandCount);
+      }, 0)
     });
   }
 

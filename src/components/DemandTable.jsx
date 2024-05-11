@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function DemandTable({data}) {
+export default function DemandTable({ data }) {
     return (
         <div className="d-flex table-responsive">
             <table className='table table-hover'>
@@ -12,13 +12,22 @@ export default function DemandTable({data}) {
                     <td className='fw-semibold py-2 px-3'>POC</td>
                 </tr>
                 <tbody>
-                    <tr className='tr-border'>
-                        <td className='py-4 px-3'>Mark</td>
-                        <td className='py-4 px-3'>Otto</td>
-                        <td className='py-4 px-3'>Mark</td>
-                        <td className='py-4 px-3'>@mdo</td>
-                        <td className='py-4 px-3'>Otto</td>
-                    </tr>
+                    {
+                        data?.map((row, index) => {
+                            return (
+                                <tr className='tr-border' key={index}>
+                                    <td className='py-4 px-3'>{row.DemandDate}</td>
+                                    <td className='py-4 px-3'>
+                                        {row.StationId} <br />
+                                        {row.StationName}
+                                    </td>
+                                    <td className='py-4 px-3'>{row.DemandRoutes}</td>
+                                    <td className='py-4 px-3'>{row.DemandCount}</td>
+                                    <td className='py-4 px-3'>{row.EmployeeName?.split(" ").slice(0, 2).join(" ")}</td>
+                                </tr>
+                            )
+                        })
+                    }
                 </tbody>
             </table>
         </div>

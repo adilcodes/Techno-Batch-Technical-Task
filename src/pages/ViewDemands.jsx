@@ -32,7 +32,7 @@ export default function ViewDemands() {
   }
 
   const startFiltering = () => {
-
+    fetchingTableData();
   };
 
   const fetchingTableData = async () => {
@@ -45,8 +45,8 @@ export default function ViewDemands() {
       },
       body: JSON.stringify({
         "filterModel": {
-          "createdFrom": "",
-          "createdTo": "",
+          "createdFrom": filterValues?.createdFrom || "2022-03-11",
+          "createdTo": filterValues?.createdTo || "2024-03-18",
           "start": 0,
           "length": 10000,
           "search": "",
@@ -147,8 +147,8 @@ export default function ViewDemands() {
         {/* Table Start */}
         {
           isLoading
-          ? <SmallLoader complete={true} />
-          : <DemandTable data={fetchedTableData} />
+            ? <SmallLoader complete={true} />
+            : <DemandTable data={fetchedTableData} />
         }
         {/* Table End */}
       </div>

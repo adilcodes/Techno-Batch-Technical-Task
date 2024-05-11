@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { StationsContextStart } from "../context/StationsContext";
+import { TokenContextStart } from "../context/TokenContext";
 
 export default function StationModal() {
-
-    // Variables:
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiRHJpdmVyIiwiSWQiOiI3IiwiTmFtZSI6IkFmYXEiLCJFbWFpbCI6IkFmYXEiLCJleHAiOjE3MTU0NDcxMDgsImlzcyI6ImFtYXpvbmRzcF9hcGkiLCJhdWQiOiJhbWF6b25kc3BfYXBpIn0.BhjbhTyhwUL4rdsq29-DWjewWzSFUL4QSvlkP4p4y7A";
 
     // States
     const [selectedStation, setSelectedStation] = useState();
     const { stationsList, setStationsList } = useContext(StationsContextStart);
+    const { token } = useContext(TokenContextStart)
     const [fetchedStations, setFetchedStations] = useState([]);
 
     // Refs
@@ -107,8 +106,8 @@ export default function StationModal() {
                                         return (
                                             <option
                                                 key={index}
-                                                value={station.StationName}
-                                                disabled={stationsList.includes(station.StationName) ? true : false}
+                                                value={station.StationName + "--" + station.StationId}
+                                                disabled={stationsList.includes(station.StationName + "--" + station.StationId) ? true : false}
                                             >
                                                 {station.StationName}
                                             </option>

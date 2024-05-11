@@ -7,10 +7,16 @@ import ViewDemands from './pages/ViewDemands';
 
 // Contexts
 import StationsContext from './context/StationsContext';
+import TokenContext from './context/TokenContext';
+import RoutesContext from './context/RoutesContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <StationsContext>
-    <Home />
-  </StationsContext>
+  <TokenContext>
+    <StationsContext>
+      <RoutesContext>
+        <Home />
+      </RoutesContext>
+    </StationsContext>
+  </TokenContext>
 );

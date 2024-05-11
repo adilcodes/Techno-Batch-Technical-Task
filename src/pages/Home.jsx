@@ -6,6 +6,8 @@ import StationView from "../components/StationView";
 
 // Context
 import { StationsContextStart } from "../context/StationsContext";
+import { TokenContextStart } from "../context/TokenContext";
+import { RoutesContextStart } from "../context/RoutesContext";
 
 export default function Home() {
   const getDateFromLS = () => {
@@ -16,6 +18,8 @@ export default function Home() {
   // States:
   const [selectedDate, setSelectedDate] = useState(getDateFromLS());
   const { stationsList } = useContext(StationsContextStart);
+  const { token } = useContext(TokenContextStart);
+  const { setRoutes } = useContext(RoutesContextStart);
   const [stationActive, setStationActive] = useState(stationsList[0]);
 
   // Functions:
@@ -23,13 +27,27 @@ export default function Home() {
     setSelectedDate(e.target.value);
   };
 
-  let makeStationActive = (station) => {
+  let makeStationActive = async (station) => {
     setStationActive(station);
+    let stationId = station ? station.split("--").reverse()[0] : "";
+
+    // Fetch Routes:
+    let response = await fetch(`https://dev-amzdsp-api.dispatchex.com/api/Stations/GetStationById?Id=${stationId}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+    if (response.ok) {
+      let result = await response.json();
+      setRoutes(result.response.routes);
+    }
   };
 
   // Effects
   useEffect(() => {
     setStationActive(stationsList[0]);
+    makeStationActive(stationsList[0])
   }, [stationsList[0]]);
 
   useEffect(() => {
@@ -78,7 +96,7 @@ export default function Home() {
                       className={`single-station ${stationActive == station ? "single-station-active" : ""
                         } p-3`}
                     >
-                      <p className="m-0">→ {station}</p>
+                      <p className="m-0">→ {station.split("--")[0]}</p>
                     </div>
                   );
                 })}
@@ -87,8 +105,8 @@ export default function Home() {
 
               <button
                 className={`btn border-0 ${!selectedDate || selectedDate == "null"
-                    ? "text-secondary"
-                    : "text-info"
+                  ? "text-secondary"
+                  : "text-info"
                   } py-0`}
                 data-bs-toggle="modal"
                 data-bs-target="#addStation"

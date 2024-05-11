@@ -5,6 +5,7 @@ export default function StationView(props) {
   // States:
   const [routesDetail, setRoutesDetail] = useState({
     routes: [],
+    routesNamesArr: [],
     demandTotal: 0
   });
 
@@ -16,7 +17,8 @@ export default function StationView(props) {
       routes: [
         ...routesDetail.routes,
         {
-          routeId: null,
+          routeId: 0,
+          routeName: "Select The Route",
           demandCount: 0,
         },
       ],
@@ -30,20 +32,35 @@ export default function StationView(props) {
 
     setRoutesDetail({
       ...routesDetail,
-      routes: [...filteredRoutes]
+      routes: [...filteredRoutes],
+      routesNamesArr: [...(filteredRoutes.map((route) => route.routeName))]
     });
   }
 
   let changeDemandValue = (e) => {
+
+  }
+
+  let changeRouteValue = (e, r_id) => {
+    let updatedRoutes = routesDetail.routes.map((route, index) => {
+      if (index !== r_id) {
+        return route;
+      }
+
+      // Required Route
+      route = {
+        ...route,
+        routeId: Number((e.target.value).split("--").reverse()[0]),
+        routeName: e.target.value
+      }
+      return (route);
+
+    });
+
     setRoutesDetail({
       ...routesDetail,
-      routes: [
-        ...routesDetail.routes,
-        {
-          routeId: null,
-          demandCount: e.target.value,
-        },
-      ],
+      routes: [...updatedRoutes],
+      routesNamesArr: [...(updatedRoutes.map((route) => route.routeName))]
     });
   }
 
@@ -53,11 +70,13 @@ export default function StationView(props) {
     if (detailsFromLS) {
       setRoutesDetail({
         routes: detailsFromLS.routes,
+        routesNamesArr: detailsFromLS.routesNamesArr,
         demandTotal: detailsFromLS.demandTotal,
       })
     } else {
       setRoutesDetail({
         routes: [],
+        routesNamesArr: [],
         demandTotal: 0
       })
     }
@@ -69,7 +88,7 @@ export default function StationView(props) {
 
   return (
     <div className="col-xl-10 col-md-9 ps-md-5 mt-md-0 mt-5">
-      <h4 className="mb-4 fw-semibold">Station Name: {props.stationName}</h4>
+      <h4 className="mb-4 fw-semibold">Station Name: {props.stationName ? (props.stationName).split("--")[0] : ""}</h4>
       <p className="m-0 mb-2">
         <span className="fw-semibold">Routes Demand</span>
         <span className="text-danger fw-bold">*</span>
@@ -104,8 +123,11 @@ export default function StationView(props) {
               key={index}
               id={index}
               routeDemand={singleRoute.demandCount}
+              routeValue={singleRoute.routeName}
+              routesNames={routesDetail.routesNamesArr}
               delRouteRowHandler={deleteRouteRow}
               changeDemandValueHandler={changeDemandValue}
+              changeRouteValueHandler={changeRouteValue}
             />
           );
         })}

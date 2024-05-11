@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import { RoutesContextStart } from "../context/RoutesContext";
 
 export default function SingleRoute(props) {
+
+  const { routes } = useContext(RoutesContextStart);
+
   return (
     <div className="single-route d-flex flex-sm-nowrap flex-wrap gap-3 mb-4">
       <div className="col-sm col-12">
@@ -11,10 +15,25 @@ export default function SingleRoute(props) {
         <select
           className="form-select border-black py-2 rounded-3 form-field"
           name="routeName"
+          value={props.routeValue}
+          onChange={(e) => {
+            props.changeRouteValueHandler(e, props.id)
+          }}
           required
         >
-          <option value="One">One</option>
-          <option value="two">two</option>
+          {
+            routes.map((route, index) => {
+              return (
+                <option
+                  key={index}
+                  value={route.RouteName + "--" + route.RouteId}
+                  disabled={props.routesNames ? (props.routesNames.includes(route.RouteName + "--" + route.RouteId) ? true : false) : ""}
+                >
+                  {route.RouteName}
+                </option>
+              )
+            })
+          }
         </select>
       </div>
 
